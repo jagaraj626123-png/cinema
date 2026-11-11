@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="Find your next moment at CineBook. Discover movies, choose your seats, and book your cinema tickets.">
+  <title>CineBook — Find your next moment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav-wrap">
+      <a class="brand" href="#discover" aria-label="CineBook home"><span class="brand-mark">C</span><span>Cine<span class="brand-light">Book</span></span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+        <a class="nav-link active" href="#discover" data-view="discover">Discover</a>
+        <a class="nav-link" href="#bookings" data-view="bookings">My Bookings</a>
+        <a class="nav-link" href="#admin" data-view="admin">Admin</a>
+      </nav>
+      <button class="button button-outline nav-ticket" data-view="bookings"><span aria-hidden="true">▤</span> My Tickets</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="discover">
+      <div class="hero-content">
+        <p class="eyebrow"><span class="eyebrow-line"></span> YOUR SEAT IS WAITING</p>
+        <h1>Find your next<br><span>moment.</span></h1>
+        <p class="hero-copy">Big stories, good company, and a little popcorn.<br class="desktop-break"> Find a film worth leaving home for.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#movies">Explore Movies <span aria-hidden="true">↗</span></a>
+          <button class="button button-ghost" data-view="bookings">View My Bookings <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="hero-note"><span class="note-dot"></span> THE LIGHTS ARE DIMMING. THE STORY IS YOURS.</div>
+      </div>
+      <a class="scroll-cue" href="#movies" aria-label="Scroll to movies"><span></span></a>
+    </section>
+
+    <section class="movie-section page-section" id="movies">
+      <div class="section-heading">
+        <div><p class="eyebrow section-eyebrow">THE GOOD PART STARTS HERE</p><h2>On the big <span>screen.</span></h2></div>
+        <p class="section-intro">The stories everyone's talking about,<br>and a few you haven't heard yet.</p>
+      </div>
+      <div class="toolbar" aria-label="Movie search and filters">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="searchInput" type="search" placeholder="Search movies..." aria-label="Search movies"></label>
+        <label class="select-wrap"><span class="sr-only">Filter by genre</span><select id="genreFilter"><option value="">All genres</option></select></label>
+        <label class="select-wrap"><span class="sr-only">Filter by language</span><select id="languageFilter"><option value="">All languages</option></select></label>
+        <label class="select-wrap"><span class="sr-only">Sort movies</span><select id="sortFilter"><option value="featured">Featured</option><option value="rating">Top rated</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option></select></label>
+      </div>
+      <div class="results-line"><span id="resultsCount"></span><span class="results-live" aria-live="polite" id="filterStatus"></span></div>
+      <div class="movie-grid" id="movieGrid"></div>
+      <div class="empty-state" id="emptyState" hidden><span class="empty-icon">✳</span><h3>No movies found</h3><p>Try a different title or loosen your filters.</p><button class="button button-outline" id="clearFilters">Clear filters</button></div>
+    </section>
+
+    <section class="bookings-section page-section alternate-section" id="bookings" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow section-eyebrow">YOUR NEXT NIGHT OUT</p><h2>My <span>bookings.</span></h2></div>
+        <p class="section-intro">Your tickets, all in one place.<br>Go on, make it a movie night.</p>
+      </div>
+      <div class="booking-list" id="bookingList"></div>
+      <div class="empty-state" id="bookingsEmpty" hidden><span class="empty-icon">▤</span><h3>No tickets just yet</h3><p>Pick a movie, find your seats, and your tickets will show up here.</p><button class="button button-primary" data-view="discover">Find a movie <span aria-hidden="true">↗</span></button></div>
+    </section>
+
+    <section class="admin-section page-section alternate-section" id="admin" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow section-eyebrow">DEMO TOOLS</p><h2>Admin <span>studio.</span></h2></div>
+        <p class="section-intro">A simple front-end demo for managing<br>the movie list and booking records.</p>
+      </div>
+      <div class="admin-notice"><span>ⓘ</span> Demo panel only — this is not secure admin authentication, and no real payments are processed.</div>
+      <div class="admin-layout">
+        <form class="admin-form panel" id="movieForm">
+          <div class="panel-heading"><div><p class="eyebrow section-eyebrow">MOVIE LIBRARY</p><h3 id="adminFormTitle">Add a movie</h3></div><button type="button" class="text-button" id="cancelEdit" hidden>Cancel edit</button></div>
+          <input type="hidden" id="editMovieId">
+          <div class="form-grid">
+            <label class="field full-field">Movie title<input id="adminTitle" required maxlength="70" placeholder="e.g. The Grand Adventure"></label>
+            <label class="field">Genre<input id="adminGenre" required maxlength="40" placeholder="Drama"></label>
+            <label class="field">Language<input id="adminLanguage" required maxlength="30" placeholder="English"></label>
+            <label class="field">Duration (minutes)<input id="adminDuration" type="number" required min="1" max="600" value="120"></label>
+            <label class="field">Rating (out of 10)<input id="adminRating" type="number" required min="0" max="10" step="0.1" value="8"></label>
+            <label class="field">Ticket price ($)<input id="adminPrice" type="number" required min="1" max="500" value="14"></label>
+            <label class="field full-field">Poster image URL<input id="adminPoster" type="url" required placeholder="https://images.unsplash.com/..."></label>
+          </div>
+          <button class="button button-primary form-submit" type="submit" id="adminSubmit">Add movie <span aria-hidden="true">＋</span></button>
+          <p class="form-message" id="adminMessage" aria-live="polite"></p>
+        </form>
+        <div class="panel admin-movies-panel"><div class="panel-heading"><div><p class="eyebrow section-eyebrow">NOW SHOWING</p><h3>Manage movies</h3></div><span class="count-pill" id="adminMovieCount"></span></div><div class="admin-movie-list" id="adminMovieList"></div></div>
+      </div>
+      <div class="panel admin-records"><div class="panel-heading"><div><p class="eyebrow section-eyebrow">THE PAPER TRAIL</p><h3>Booking records</h3></div><span class="count-pill" id="adminBookingCount"></span></div><div class="table-scroll"><table><thead><tr><th>Booking ID</th><th>Guest</th><th>Movie</th><th>Showtime</th><th>Seats</th><th>Total</th><th>Status</th></tr></thead><tbody id="adminBookingRows"></tbody></table><p class="admin-empty" id="adminBookingsEmpty" hidden>No booking records yet.</p></div></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="footer-about"><a class="brand" href="#discover"><span class="brand-mark">C</span><span>Cine<span class="brand-light">Book</span></span></a><p>Good films. Great company.<br>Make a night of it.</p></div>
+      <div class="footer-links"><a href="#about" data-info="About Us">About us</a><a href="#contact" data-info="Contact">Contact</a><a href="#help" data-info="Help">Help</a><a href="#terms" data-info="Terms and Conditions">Terms &amp; conditions</a><a href="#privacy" data-info="Privacy Policy">Privacy policy</a></div>
+      <div class="footer-social"><p>PASS THE WORD</p><div><a href="https://instagram.com" aria-label="Instagram">ig</a><a href="https://facebook.com" aria-label="Facebook">f</a><a href="https://x.com" aria-label="X">𝕏</a></div></div>
+    </div>
+    <div. class="footer-bottom"><span>© <span id="currentYear"></span> CineBook. All stories welcome.</span><span>MADE FOR THE LOVE OF THE MOVIES <span class="heart">♥</span></span></div>
+  </footer>
+
+  <dialog class="booking-dialog" id="bookingDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-head"><div><p class="eyebrow section-eyebrow" id="dialogEyebrow">MAKE IT A MOVIE NIGHT</p><h2 id="dialogTitle">Book your seats</h2></div><button class="icon-button" id="closeDialog" aria-label="Close dialog">×</button></div>
+    <div id="bookingPanel">
+      <div class="booking-movie-summary" id="bookingMovieSummary"></div>
+      <form id="bookingForm">
+        <div class="booking-selects">
+          <label class="field">Theatre<select id="theatreSelect" required><option value="">Choose a theatre</option><option>Grand Cinema · Downtown</option><option>Starlight Theatre · Westside</option><option>Riverside Screens · Riverside</option></select></label>
+          <label class="field">Date<input id="dateSelect" type="date" required></label>
+          <label class="field">Showtime<select id="timeSelect" required><option value="">Choose a showtime</option><option>10:30 AM</option><option>1:45 PM</option><option>5:15 PM</option><option>8:40 PM</option></select></label>
+        </div>
+        <div class="seat-picker">
+          <div class="screen-label"><span>SCREEN</span></div>
+          <div class="seat-layout" id="seatLayout" aria-label="Cinema seat layout"></div>
+          <div class="seat-legend"><span><i class="legend-seat available"></i>Available</span><span><i class="legend-seat selected"></i>Selected</span><span><i class="legend-seat taken"></i>Booked</span></div>
+        </div>
+        <div class="booking-bottom">
+          <div class="guest-fields"><label class="field">Your name<input id="guestName" required maxlength="70" autocomplete="name" placeholder="Alex Morgan"></label><label class="field">Email address<input id="guestEmail" type="email" required maxlength="120" autocomplete="email" placeholder="alex@example.com"></label></div>
+          <div class="checkout-bar"><div><span class="checkout-label">SELECTED</span><strong id="selectedSeatText">No seats</strong></div><div class="total-price"><span class="checkout-label">TOTAL</span><strong id="bookingTotal">$0.00</strong></div><button class="button button-primary" id="confirmBooking" type="submit" disabled>Confirm booking <span aria-hidden="true">→</span></button></div>
+        </div>
+      </form>
+    </div>
+    <div class="confirmation-state" id="confirmationState" hidden></div>
+  </dialog>
+
+  <dialog class="info-dialog" id="infoDialog"><div class="dialog-head"><h2 id="infoTitle"></h2><button class="icon-button" id="closeInfo" aria-label="Close dialog">×</button></div><p id="infoCopy"></p></dialog>
+</body>
+</html>
